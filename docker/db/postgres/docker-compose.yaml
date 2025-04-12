@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: lootly-db-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: lootly_dev
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - lootly-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+
+networks:
+  lootly-network:
+    driver: bridge

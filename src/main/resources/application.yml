@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: lootly
+  datasource:
+    url: jdbc:postgresql://localhost:5432/lootly_dev
+    username: postgres
+    password: postgres
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    generate-ddl: true
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
