@@ -1,4 +1,4 @@
-package com.cdbfkk.lootly.shared.logging
+package com.cdbfkk.lootly.modules.logs.domain.model
 
 import jakarta.persistence.*
 import java.time.LocalDateTime

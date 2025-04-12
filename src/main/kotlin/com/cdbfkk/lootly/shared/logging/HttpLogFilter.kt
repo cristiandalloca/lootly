@@ -3,17 +3,18 @@ package com.cdbfkk.lootly.shared.logging
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.util.ContentCachingResponseWrapper
 
 @Component
 class HttpLogFilter(
-    private val repository:HttpLogRepository
+    private val applicationEventPublisher: ApplicationEventPublisher
 ) : OncePerRequestFilter() {
 
     private companion object {
-        const val MAX_BODY_LENGTH = 5000
+        private const val X_FORWARDED_FOR_HEADER = "X-Forwarded-For"
     }
 
     override fun doFilterInternal(
@@ -24,46 +25,47 @@ class HttpLogFilter(
         val cachedRequest = CachedBodyHttpServletRequest(request)
         val cachedResponse = ContentCachingResponseWrapper(response)
 
-        val startTimestamp = System.currentTimeMillis()
+        val startTimeMillis = System.currentTimeMillis()
+
         filterChain.doFilter(cachedRequest, cachedResponse)
-        val responseTime = System.currentTimeMillis() - startTimestamp
+        val responseTime = System.currentTimeMillis() - startTimeMillis
 
-        val log = buildHttpLog(cachedRequest, cachedResponse, responseTime)
-        repository.save(log)
-
+        logRequest(cachedRequest, cachedResponse, responseTime)
         cachedResponse.copyBodyToResponse()
     }
 
-    private fun buildHttpLog(
+    private fun logRequest(
+        cachedRequest: CachedBodyHttpServletRequest,
+        cachedResponse: ContentCachingResponseWrapper,
+        responseTime: Long
+    ) {
+        val logRequestEvent = buildLogRequestEvent(cachedRequest, cachedResponse, responseTime)
+        applicationEventPublisher.publishEvent(logRequestEvent)
+    }
+
+    private fun buildLogRequestEvent(
         request: CachedBodyHttpServletRequest,
         response: ContentCachingResponseWrapper,
         responseTime: Long
-    ): HttpLog {
-        val requestBody = request.getCachedBody().take(MAX_BODY_LENGTH)
-        val responseBody = String(response.contentAsByteArray).take(MAX_BODY_LENGTH)
-        val headers = extractHeaders(request)
+    ): HttpLogRequestEvent {
+        val headers = extractHeaders(request).toString()
 
-        return HttpLog(
+        return HttpLogRequestEvent(
             method = request.method,
             path = request.requestURI,
-            status = response.status,
+            statusCode = response.status,
             responseTimeMs = responseTime,
-            requestBody = requestBody,
-            responseBody = responseBody,
-            queryParameters = request.queryString ?: "",
-            ip = request.getHeader("X-Forwarded-For") ?: request.remoteAddr,
-            headers = headers.toString().take(MAX_BODY_LENGTH)
+            requestBody = request.getCachedBody(),
+            responseBody = String(response.contentAsByteArray),
+            queryParams = request.queryString,
+            ip = request.getHeader(X_FORWARDED_FOR_HEADER) ?: request.remoteAddr,
+            headers = headers
         )
     }
 
     private fun extractHeaders(request: HttpServletRequest): Map<String, String> {
-        val headers = mutableMapOf<String, String>()
-        val headerNames = request.headerNames
-        while (headerNames.hasMoreElements()) {
-            val name = headerNames.nextElement()
-            headers[name] = request.getHeader(name)
-        }
-        return headers
+        return request.headerNames.asSequence()
+            .associateWith { request.getHeader(it) }
     }
 
 }
