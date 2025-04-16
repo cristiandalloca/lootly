@@ -1,10 +1,10 @@
 package com.cdbfkk.lootly
 
+import com.cdbfkk.lootly.common.AbstractIntegrationTest
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
 
-@SpringBootTest
-class LootlyApplicationTests {
+class LootlyApplicationTests : AbstractIntegrationTest() {
 
     @Test
     fun contextLoads() {

@@ -2,7 +2,7 @@ package com.cdbfkk.lootly.modules.logs.listener
 
 import com.cdbfkk.lootly.modules.logs.domain.model.HttpLog
 import com.cdbfkk.lootly.modules.logs.domain.repository.HttpLogRepository
-import com.cdbfkk.lootly.shared.logging.HttpLogRequestEvent
+import com.cdbfkk.lootly.shared.api.events.HttpLogRequestEvent
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
@@ -24,12 +24,16 @@ class HttpLogRequestEventListener(
             path = event.path,
             status = event.statusCode,
             responseTimeMs = event.responseTimeMs,
-            requestBody = event.requestBody?.take(MAX_BODY_LENGTH),
-            responseBody = event.responseBody?.take(MAX_BODY_LENGTH),
+            requestBody = takeIfNecessary(event.requestBody),
+            responseBody = takeIfNecessary(event.responseBody),
             queryParameters = event.queryParams,
             ip = event.ip,
-            headers = event.headers.take(MAX_BODY_LENGTH)
+            headers = takeIfNecessary(event.headers).toString()
         )
         repository.save(httpLog)
+    }
+
+    private fun takeIfNecessary(value: String?) : String? {
+        return value?.take(MAX_BODY_LENGTH)
     }
 }

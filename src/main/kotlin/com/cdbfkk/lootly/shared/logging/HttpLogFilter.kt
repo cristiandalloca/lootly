@@ -1,5 +1,6 @@
 package com.cdbfkk.lootly.shared.logging
 
+import com.cdbfkk.lootly.shared.api.events.HttpLogRequestEvent
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

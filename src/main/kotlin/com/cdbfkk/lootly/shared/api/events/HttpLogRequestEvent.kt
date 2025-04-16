@@ -1,4 +1,4 @@
-package com.cdbfkk.lootly.shared.logging
+package com.cdbfkk.lootly.shared.api.events
 
 data class HttpLogRequestEvent(
     val method: String,
