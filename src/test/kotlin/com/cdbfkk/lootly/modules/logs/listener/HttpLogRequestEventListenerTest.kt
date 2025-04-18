@@ -1,8 +1,9 @@
 package com.cdbfkk.lootly.modules.logs.listener
 
 import com.cdbfkk.lootly.common.AbstractUnitTest
-import com.cdbfkk.lootly.modules.logs.domain.model.HttpLog
-import com.cdbfkk.lootly.modules.logs.domain.repository.HttpLogRepository
+import com.cdbfkk.lootly.logs.domain.model.HttpLog
+import com.cdbfkk.lootly.logs.domain.repository.HttpLogRepository
+import com.cdbfkk.lootly.logs.listener.HttpLogRequestEventListener
 import com.cdbfkk.lootly.shared.api.events.HttpLogRequestEvent
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.params.ParameterizedTest

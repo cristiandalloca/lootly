@@ -1,8 +1,8 @@
 package com.cdbfkk.lootly.shared.api.exceptionhandler
 
-import com.cdbfkk.lootly.shared.exception.BaseException
-import com.cdbfkk.lootly.shared.exception.BusinessException
-import com.cdbfkk.lootly.shared.exception.NotFoundException
+import com.cdbfkk.lootly.shared.api.exception.BaseException
+import com.cdbfkk.lootly.shared.api.exception.BusinessException
+import com.cdbfkk.lootly.shared.api.exception.NotFoundException
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpHeaders

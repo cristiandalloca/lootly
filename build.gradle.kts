@@ -56,6 +56,10 @@ tasks.register<Test>("integrationTest") {
     }
 }
 
+tasks.test {
+    jvmArgs = listOf("-javaagent:${classpath.find { it.name.contains("byte-buddy-agent") }?.absolutePath}")
+}
+
 fun configureRepositories() {
     repositories {
         mavenCentral()

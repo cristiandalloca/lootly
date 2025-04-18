@@ -1,7 +1,7 @@
 package com.cdbfkk.lootly.modules.logs.listener
 
 import com.cdbfkk.lootly.common.AbstractIntegrationTest
-import com.cdbfkk.lootly.modules.logs.domain.repository.HttpLogRepository
+import com.cdbfkk.lootly.logs.domain.repository.HttpLogRepository
 import com.cdbfkk.lootly.shared.api.events.HttpLogRequestEvent
 import org.assertj.core.api.Assertions.assertThat
 import org.awaitility.Awaitility.await
