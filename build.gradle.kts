@@ -1,6 +1,6 @@
 val springBootVersion = "3.4.4"
 val springDocOpenApiVersion = "2.8.6"
-val testContainersVersion = "1.20.6"
+val testContainersVersion = "1.21.0"
 val springModulithVersion = "1.3.4"
 val awaitilityVersion = "4.3.0"
 
