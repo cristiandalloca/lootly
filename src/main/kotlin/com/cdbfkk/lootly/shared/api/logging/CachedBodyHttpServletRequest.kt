@@ -17,7 +17,9 @@ class CachedBodyHttpServletRequest(request: HttpServletRequest) : HttpServletReq
             override fun read(): Int = byteArrayInputStream.read()
             override fun isFinished() = byteArrayInputStream.available() == 0
             override fun isReady() = true
-            override fun setReadListener(readListener: ReadListener?) {}
+            override fun setReadListener(readListener: ReadListener?) {
+                throw UnsupportedOperationException()
+            }
         }
     }
 

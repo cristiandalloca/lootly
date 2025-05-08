@@ -1,5 +1,5 @@
 server:
-  port: 0
+  port: 8081
 spring:
   application:
     name: lootly
@@ -17,3 +17,16 @@ spring:
       hibernate:
         jdbc:
           time_zone: UTC
+
+http:
+  logging:
+    excluded-paths:
+      - "/"
+      - "/swagger"
+      - "/actuator/**"
+      - "/swagger-ui/**"
+      - "/v3/api-docs/**"
+      - "/health"
+      - "/metrics/**"
+      - "/internal/**"
+      - "/management/**"

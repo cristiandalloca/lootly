@@ -3,6 +3,7 @@ package com.cdbfkk.lootly.shared.api.configuration
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.Operation
 import io.swagger.v3.oas.models.info.Info
+import io.swagger.v3.oas.models.media.StringSchema
 import io.swagger.v3.oas.models.parameters.Parameter
 import org.springdoc.core.customizers.OpenApiCustomizer
 import org.springframework.context.annotation.Bean
@@ -25,8 +26,12 @@ class OpenApiConfig {
                         Parameter()
                             .name("Accept-Language")
                             .`in`("header")
-                            .description("Idioma da resposta (ex: pt-BR, en-US, es-ES)")
+                            .description("Idioma da resposta")
                             .required(false)
+                            .schema(
+                                StringSchema()
+                                    ._enum(listOf("pt-BR", "en-US", "es-ES"))
+                            )
                             .example("pt-BR")
                     )
                 }

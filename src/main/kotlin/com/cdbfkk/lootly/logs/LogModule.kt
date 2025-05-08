@@ -1,4 +1,4 @@
-@file:ApplicationModule(allowedDependencies = ["shared"])
+@file:ApplicationModule
 package com.cdbfkk.lootly.logs
 
 import org.springframework.modulith.ApplicationModule
